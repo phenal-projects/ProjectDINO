@@ -15,6 +15,6 @@ model:
   projection_layers: 3
 training:
   learning_rate: 0.0007
-  max_epochs: 128
+  max_epochs: 164
   checkpoints_folder: "./models"
   gpus: 1

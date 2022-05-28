@@ -61,10 +61,10 @@ class ViTDINO(LightningModule):
             optimizer,
             mode="min",
             factor=0.5,
-            patience=5,
+            patience=10,
             verbose=True,
-            cooldown=5,
-            min_lr=1e-8,
+            cooldown=10,
+            min_lr=1e-7,
         )
         return {
             "optimizer": optimizer,
