@@ -1,21 +1,19 @@
 import torch
-from nystrom_attention import Nystromformer
 from pytorch_lightning import LightningModule
 from torch import optim
+from vit_pytorch import ViT
 from vit_pytorch.dino import Dino
-from vit_pytorch.efficient import ViT
 
 from models.utils import linear_annealing_with_plateau
 
 
-class NystromDINO(LightningModule):
+class ViTDINO(LightningModule):
     def __init__(
         self,
         hidden_dim: int = 128,
         output_dim: int = 512,
         depth: int = 12,
         num_heads: int = 8,
-        num_landmarks: int = 256,
         image_size: int = 256,
         patch_size: int = 32,
         projection_hidden_size: int = 256,
@@ -26,15 +24,13 @@ class NystromDINO(LightningModule):
         super().__init__()
         self.save_hyperparameters()
 
-        efficient_transformer = Nystromformer(
-            dim=hidden_dim, depth=depth, heads=num_heads, num_landmarks=num_landmarks
-        )
         self.model = ViT(
             image_size=image_size,
             patch_size=patch_size,
             num_classes=output_dim,
             dim=hidden_dim,
-            transformer=efficient_transformer,
+            depth=depth,
+            heads=num_heads,
         )
         self.learner = Dino(
             self.model,
