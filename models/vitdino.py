@@ -14,6 +14,7 @@ class ViTDINO(LightningModule):
         output_dim: int = 512,
         depth: int = 12,
         num_heads: int = 8,
+        mlp_dim: int = 512,
         image_size: int = 256,
         patch_size: int = 32,
         projection_hidden_size: int = 256,
@@ -31,6 +32,7 @@ class ViTDINO(LightningModule):
             dim=hidden_dim,
             depth=depth,
             heads=num_heads,
+            mlp_dim=mlp_dim,
         )
         self.learner = Dino(
             self.model,

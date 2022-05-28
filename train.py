@@ -6,7 +6,7 @@ from pytorch_lightning.loggers import WandbLogger
 from torchvision import transforms
 
 from data.datamodule import ImageFolderDataModule
-from models.nystromdino import NystromDINO
+from models.vitdino import ViTDINO
 
 
 @hydra.main(config_path="conf", config_name="train_config")
@@ -69,12 +69,12 @@ def main(cfg: DictConfig) -> None:
         num_workers=cfg["data"]["num_workers"],
         random_seed=cfg["random_seed"],
     )
-    model = NystromDINO(
+    model = ViTDINO(
         hidden_dim=cfg["model"]["hidden_dim"],
         output_dim=cfg["model"]["output_dim"],
         depth=cfg["model"]["depth"],
         num_heads=cfg["model"]["num_heads"],
-        num_landmarks=cfg["model"]["num_landmarks"],
+        mlp_dim=cfg["model"]["mlp_dim"],
         image_size=cfg["model"]["image_size"],
         patch_size=cfg["model"]["patch_size"],
         projection_hidden_size=cfg["model"]["projection_hidden_size"],

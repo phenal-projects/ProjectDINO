@@ -1,7 +1,7 @@
 random_seed: 42
 data:
   image_folder: "/home/ilyabushmakin/Documents/Projects/DataStorage/kaggle_personal/ProjectDINODataset/images"
-  batch_size: 2
+  batch_size: 8
   num_workers: 5
 model:
   image_size: 256
@@ -9,8 +9,8 @@ model:
   output_dim: 512
   depth: 10
   num_heads: 8
-  num_landmarks: 256
-  patch_size: 32
+  mlp_dim: 512
+  patch_size: 16
   projection_hidden_size: 512
   projection_layers: 3
 training:
