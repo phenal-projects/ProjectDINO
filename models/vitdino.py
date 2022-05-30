@@ -33,6 +33,7 @@ class ViTDINO(LightningModule):
             depth=depth,
             heads=num_heads,
             mlp_dim=mlp_dim,
+            dropout=0.15
         )
         self.learner = Dino(
             self.model,
@@ -50,7 +51,7 @@ class ViTDINO(LightningModule):
             # moving average of teacher centers - paper showed anywhere from 0.9 to 0.999 was ok
         )
 
-        self.teacher_temp_scheduler = linear_annealing_with_plateau(0.04, 0.07, 400)
+        self.teacher_temp_scheduler = linear_annealing_with_plateau(0.04, 0.07, 4000*5)
 
     def configure_optimizers(self):
         optimizer = optim.AdamW(
@@ -61,9 +62,9 @@ class ViTDINO(LightningModule):
             optimizer,
             mode="min",
             factor=0.5,
-            patience=10,
-            verbose=True,
-            cooldown=10,
+            patience=16,
+            verbose=False,
+            cooldown=32,
             min_lr=1e-7,
         )
         return {
