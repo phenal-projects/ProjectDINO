@@ -4,6 +4,7 @@ from omegaconf import DictConfig
 from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
 from pytorch_lightning.loggers import WandbLogger
 from torchvision import transforms
+from wandb.wandb_torch import torch
 
 from data.datamodule import ImageFolderDataModule
 from models.vitdino import ViTDINO
@@ -83,6 +84,9 @@ def main(cfg: DictConfig) -> None:
         max_epochs=cfg["training"]["max_epochs"],
     )
 
+    # ckpt
+    model = model.load_from_checkpoint("")
+
     trainer = pl.Trainer(
         default_root_dir=cfg["training"]["checkpoints_folder"],
         gpus=cfg["training"]["gpus"],
@@ -91,7 +95,7 @@ def main(cfg: DictConfig) -> None:
             ModelCheckpoint(
                 save_weights_only=True,
                 mode="min",
-                save_top_k=3,
+                save_top_k=6,
                 monitor="val_epoch_loss",
             ),
             LearningRateMonitor("epoch"),
@@ -101,6 +105,7 @@ def main(cfg: DictConfig) -> None:
         logger=WandbLogger(project="ProjectDINO", log_model=True),
     )
     trainer.fit(model, data)
+    torch.save(model.state_dict(), cfg["training"]["checkpoints_folder"] + "/last.ckpt")
 
 
 if __name__ == "__main__":
