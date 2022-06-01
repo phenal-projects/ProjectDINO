@@ -84,8 +84,8 @@ def main(cfg: DictConfig) -> None:
         max_epochs=cfg["training"]["max_epochs"],
     )
 
-    # ckpt
-    model = model.load_from_checkpoint("")
+    # load ckpt
+    model = model.load_from_checkpoint("/home/ilyabushmakin/Documents/Projects/Playground/ProjectDINO/outputs/2022-05-30/13-32-18/models/ProjectDINO/3oo7yf7l/checkpoints/epoch=32-step=131999.ckpt")
 
     trainer = pl.Trainer(
         default_root_dir=cfg["training"]["checkpoints_folder"],
